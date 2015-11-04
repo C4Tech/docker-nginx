@@ -12,7 +12,13 @@ configured to provide both HTTP and HTTPS connections.
 4. `/etc/ssl/private/app.key` must be a mounted volume.
 5. `/etc/ssl/private/dhparam.pem` must be a mounted volume.
 
-`dhparam.pem` file is generated via `openssl dhparam -out dhparam.pem 4096`.
+We use the `c4tech/generic-data` image to provide `app` as a linked volume.
+Also, `c4tech/laravel-nginx` is what we use for our PHP-FPM service.
+
+To generate the `dhparam.pem` file, run:
+```
+openssl dhparam -out dhparam.pem 4096
+```
 
 For the SSL certificate and key, you can generate a CSR and key, then submite
 the CSR to a certificate provider who will provide the certificate.
