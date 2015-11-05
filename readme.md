@@ -39,9 +39,9 @@ www:
   image: c4tech/laravel-nginx
   volumes:
     - ./:/app
-    - ssl/server.crt:/etc/ssl/public/app.crt
-    - ssl/server.key:/etc/ssl/private/app.key
-    - ssl/dhparam.pem:/etc/ssl/private/dhparam.pem
+    - ./ssl/server.crt:/etc/ssl/public/app.crt
+    - ./ssl/server.key:/etc/ssl/private/app.key
+    - ./ssl/dhparam.pem:/etc/ssl/private/dhparam.pem
   links:
     - fpm
   ports:
