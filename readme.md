@@ -1,19 +1,19 @@
-# Nginx container for PHP-FPM services
+# Nginx container services
 
-A basic nginx 1.x container to serve a PHP-FPM container publicly. It is
-configured to provide both HTTP and HTTPS connections.
+A basic public nginx 1.x container. It is configured to provide both HTTP
+and/or HTTPS connections.
 
 
 ## Configuration
 
 1. `/app/public` must be a mounted volume and be the webroot.
-2. `fpm` must be a linked container providing the PHP-FPM service.
-3. `/etc/ssl/public/app.crt` must be a mounted volume.
-4. `/etc/ssl/private/app.key` must be a mounted volume.
-5. `/etc/ssl/private/dhparam.pem` must be a mounted volume.
+2. `fpm` must be a linked container providing the PHP-FPM service for the `php` and `php-ssl` images.
+3. `/etc/ssl/public/app.crt` must be a mounted volume for the `php-ssl` and `static-ssl` images.
+4. `/etc/ssl/private/app.key` must be a mounted volume for the `php-ssl` and `static-ssl` images.
+5. `/etc/ssl/private/dhparam.pem` must be a mounted volume for the `php-ssl` and `static-ssl` images.
 
 We use the `c4tech/generic-data` image to provide `app` as a linked volume.
-Also, `c4tech/laravel-nginx` is what we use for our PHP-FPM service.
+Also, `c4tech/laravel-fpm` is what we use for our PHP-FPM service.
 
 To generate the `dhparam.pem` file, run:
 ```
@@ -28,7 +28,7 @@ openssl req -nodes -new -newkey rsa:4096 -keyout server.key -out server.csr -sha
 
 Alternatively, you can create a self-signed SSL certificate:
 ```
-openssl req -x509 -newkey rsa:4086 -keyout server.key -out server.crt -days 3650 -nodes -sha256
+openssl req -x509 -newkey rsa:4096 -keyout server.key -out server.crt -days 3650 -nodes -sha256
 ```
 
 
@@ -36,7 +36,7 @@ openssl req -x509 -newkey rsa:4086 -keyout server.key -out server.crt -days 3650
 
 ```
 www:
-  image: c4tech/laravel-nginx
+  image: c4tech/nginx:php-ssl
   volumes:
     - ./:/app
     - ./ssl/server.crt:/etc/ssl/public/app.crt
